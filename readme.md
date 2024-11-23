@@ -129,7 +129,9 @@ Note: $\oplus$ denotes XOR, $\ll$ denotes logical left shift, and $mod$ denotes 
 
 接者 $q$ 行，每行皆有三個數字 $x, y, z$（中間以空格隔開），請將 block_i_x.txt 中的 \<data y> 改成 z
 
-**注意！我們保證原先的 \<data y> 與數字 z 有相同的位數，請直接覆蓋資料，不必擔心會有多出/缺少的位數導致需要平移檔案內容的狀況（Nonce 沒有上述相同位數的保證）。**
+**我們保證原先的 \<data y> 與數字 z 有相同的位數，請直接覆蓋資料，不必擔心會有多出/缺少的位數導致需要平移檔案內容的狀況。**
+
+**Nonce 位數如果增加，請直接寫入;Nonce 位數如果減少，請在前面補0到原本的位數，避免檔案大小減少。**
 
 The first line contains two numbers $n$ and $q$ (separated by a space), representing the number of block files and the number of tampering commands.
 
@@ -137,7 +139,9 @@ The next $n$ lines contain block file names (`block_i_1.txt`, ..., `block_i_n.tx
 
 The following $q$ lines each contain three numbers $x, y, z$ (separated by spaces), instructing you to modify `<data y>` in `block_i_x.txt` to `z`.
 
-**Note:** We guarantee that the original `<data y>` and the number `z` have the same number of digits, so you can directly overwrite the data without worrying about shifting the file's contents. (The Nonce does not share the same digit-length guarantee.)
+**We guarantee that the original `<data y>` and the number `z` have the same number of digits, so you can directly overwrite the data without worrying about shifting the file's contents. (The Nonce does not share the same digit-length guarantee.)**
+
+**If the number of digits in the Nonce increases, write it directly; if the number of digits decreases, prepend zeros to match the original number of digits to avoid reducing the file size.**
 ```
 n q
 block_i_1.txt
