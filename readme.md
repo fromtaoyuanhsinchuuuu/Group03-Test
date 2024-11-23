@@ -176,7 +176,7 @@ Additionally, ensure that both the output and the modified files are correct to 
 ### Constrain
 $1 \leq n \leq 20$
 
-$1 \leq k \lt 5000,\; for\ all\ blocks$
+$1 \leq k \lt 5000,\ for\ all\ blocks$
 
 $1 \leq q \leq 1000$
 
@@ -187,13 +187,13 @@ $1 \leq x \lt n$
 ### Testcase Group
 - **Subtask 0~3 (20 point)**
     - $1 \leq n \leq 10$
-    - $1 \leq k \lt 10,\; for\ all\ blocks$
+    - $1 \leq k \lt 10,\ for\ all\ blocks$
     - $1 \leq q \leq 10$
 - **Subtask 4~5 (20 point)**
-    - $1 \leq k \lt 25,\; for\ all\ blocks$
+    - $1 \leq k \lt 25,\ for\ all\ blocks$
     - $1 \leq q \leq 25$
 - **Subtask 6~7 (30 point)**
-    - $1 \leq k \lt 500,\; for\ all\ blocks$
+    - $1 \leq k \lt 500,\ for\ all\ blocks$
 - **Subtask 8~9 (30 point)**
     - $no\ other\ constrain$
 
