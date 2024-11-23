@@ -67,21 +67,16 @@ int main(){
         unsigned int z;
         scanf("%d %d %u", &x, &y, &z);
         FILE *fp = fopen(filenames[x-1], "r+");
-        if (fp == NULL) printf("open block %d fail\n", x);
         int file_size, P_len, D_len, N_len;
         if (get_file_info(fp, &file_size, &P_len, &D_len, &N_len) != 0) {
             printf("error in get block %d\n", x);
         }
-        printf("len: %d %d %d %d\n", file_size, P_len, D_len, N_len);
 
         // 計算 s
-        int k_plus_1 = (file_size - P_len - N_len) / D_len + 1;
-        int total_shifts = k_plus_1 / 25;
-        int shifts_before = y / 25;
+        int k_plus_1 = ((file_size - P_len - N_len) / D_len) + 1;
+        int total_shifts = (k_plus_1-1) / 25;
+        int shifts_before = (y-1) / 25;
         int s = total_shifts - shifts_before;
-        if(s < 0) s = 0;
-        if(s > 29) s = 30; // 防止左移超過 30 位元
-        printf("s: %d\n", s);
 
         // 計算 data y 行的位元組偏移量
         // Offset = first_line_length + (y -1) * data_line_length
@@ -94,8 +89,18 @@ int main(){
         // 先讀取整行，再提取數值
         char data_line[MAX_LINE_LEN];
         fgets(data_line, sizeof(data_line), fp);
-        sscanf(data_line, "%*d: %u", &original_data);
+        sscanf(data_line, "%u", &original_data);
 
+        // 修改 data y 行為 z
+        // 跳轉回 data y 行的起始位置
+        fseek(fp, data_y_offset, SEEK_SET);
+        fprintf(fp, "%u\n", z);
+        
+        if (s > 30) {
+            count_no_change++;
+            fclose(fp);
+            continue;
+        }
         // 計算 new_nonce
         unsigned int new_nonce;
         // 計算 nonce 行的位元組偏移量
@@ -110,7 +115,6 @@ int main(){
 
         // 計算 new_nonce = current_nonce XOR (data_y << s) XOR (z << s)
         new_nonce = current_nonce ^ ((original_data << s) & 0x3FFFFFFF) ^ ((z << s) & 0x3FFFFFFF);
-        printf("num: %u %u %u %u\n", new_nonce, current_nonce, original_data, z);
 
         // 判斷 nonce 是否改變
         if(new_nonce == current_nonce){
@@ -120,13 +124,12 @@ int main(){
             // 更新 nonce
             // 跳轉回 nonce 行的起始位置
             fseek(fp, nonce_offset, SEEK_SET);
+            char buf[MAX_LINE_LEN];
+            memset(buf, '\0', N_len);
+            fwrite(buf, 1, N_len, fp);
+            fseek(fp, nonce_offset, SEEK_SET);
             fprintf(fp, "N: %u\n", new_nonce);
         }
-
-        // 修改 data y 行為 z
-        // 跳轉回 data y 行的起始位置
-        fseek(fp, data_y_offset, SEEK_SET);
-        fprintf(fp, "%d: %u\n", y, z);
 
         fclose(fp);
     }
