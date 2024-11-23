@@ -3,16 +3,18 @@ import os
 
 def count_lines_in_file(filename):
     """
-    Count the number of lines in a given file.
+    Count the number of lines in a given block file.
     
     Args:
-        filename (str): The name of the file to count lines.
+        filename (str): The name of the block file.
     
     Returns:
-        int: The number of lines in the file.
+        int: The number of data lines in the block file.
     """
     with open(filename, 'r') as file:
-        return sum(1 for _ in file)
+        lines = file.readlines()
+        # Subtract 2 for the P and N lines
+        return len(lines) - 2  
 
 
 def get_data_width(block_file, y):
@@ -21,15 +23,16 @@ def get_data_width(block_file, y):
     
     Args:
         block_file (str): The block file name.
-        y (int): The index of the data field.
+        y (int): The index of the data field (1-based).
     
     Returns:
         int: The width (number of digits) of the data field.
     """
     with open(block_file, 'r') as file:
         lines = file.readlines()
-        data_line = lines[y]  # Line y corresponds to <data y>.
-        value = data_line.split(":")[1].strip()
+        # Access the y-th data line directly (adjusted for the block format)
+        data_line = lines[y]  # Line y corresponds to the y-th data
+        value = data_line.strip()
         return len(value)
 
 
@@ -50,26 +53,29 @@ def append_x_y_z(in_file):
     # Generate and append x, y, z values
     with open(in_file, 'a') as file:
         for _ in range(q):
-            # Randomly select x (1 <= x <= n)
-            x = random.randint(1, n)
+            # Randomly select x (1 <= x < n, not the last block)
+            x = random.randint(1, n - 1)
             block_file = block_files[x - 1]
 
             # Determine the number of data lines (k) in the selected block file
-            k = count_lines_in_file(block_file) - 2  # Subtract 2 for P and N lines
+            k = count_lines_in_file(block_file)  # Already adjusted for new format
             y = random.randint(1, k)  # Randomly select y (1 <= y <= k)
 
             # Get the data width from the selected line in the block file
             data_width = get_data_width(block_file, y)
             
             # Generate a z value with the same number of digits as the selected data
-            z = ''.join(random.choices('0123456789', k=data_width))
+            z = ''.join(
+                [str(random.randint(1, 9))] +  # First digit (1-9)
+                [str(random.randint(0, 9)) for _ in range(data_width - 1)]  # Remaining digits (0-9)
+            )
 
             # Append the generated x, y, z to the .in file
             file.write(f"{x} {y} {z}\n")
 
 
 def main():
-    # Process files from 2.in to 9.in
+    # Process files from 0.in to 9.in
     for i in range(0, 10):
         in_file = f"{i}.in"
         if os.path.exists(in_file):
