@@ -124,11 +124,7 @@ int main(){
             // 更新 nonce
             // 跳轉回 nonce 行的起始位置
             fseek(fp, nonce_offset, SEEK_SET);
-            char buf[MAX_LINE_LEN];
-            memset(buf, '\0', N_len);
-            fwrite(buf, 1, N_len, fp);
-            fseek(fp, nonce_offset, SEEK_SET);
-            fprintf(fp, "N: %u\n", new_nonce);
+            fprintf(fp, "N: %0*u\n", N_len-4, new_nonce);
         }
 
         fclose(fp);
