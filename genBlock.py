@@ -35,10 +35,15 @@ def generate_blocks_for_in_file(in_file):
 
     prev_hash = 0  # Initialize the previous hash value
 
-    for block_file in block_files:
+    for i, block_file in enumerate(block_files):
         k = random.randint(*data_count_range)  # Choose random data count within range
         block_data = generate_block_data(k, n_digits)
-        nonce = generate_nonce()
+        
+        # Determine nonce
+        if i == len(block_files) - 1:  # Last block
+            nonce = "0"
+        else:
+            nonce = generate_nonce()
 
         # Compute hash for the block
         hash_value = compute_hash(block_data, nonce)
@@ -82,7 +87,8 @@ def generate_nonce():
     Returns:
         str: A random nonce value.
     """
-    return ''.join(random.choices('0123456789', k=8))  # 8-digit nonce
+    # Ensure the first digit is not 0
+    return ''.join([str(random.randint(1, 9))] + random.choices('0123456789', k=7))  # 8-digit nonce
 
 
 def compute_hash(data_list, nonce):
