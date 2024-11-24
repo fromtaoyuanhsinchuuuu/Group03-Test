@@ -103,28 +103,34 @@ N: <nonce>
     - These adjustments are made to help your calculate offsets and perform random access.
 
 
-
 ### 雜湊函數 (Hash function)
+**Nonce 運算部份與作業不同，請多加注意**
+
 雜湊函數定義如下，將區塊的所有 data 以及 Nonce 進行運算即可得到區塊的雜湊值（不會使用到 previous hash）
 - 初始 $H_0=0$
 - 依照下列式子反覆運算
-    - ![alt text](https://github.com/fromtaoyuanhsinchuuuu/Group03-Test/blob/main/image/Hash_Function.jpg?raw=true)
-    - 假設區塊中有 $k$ 個data，則 $i\ from\ 1\ to\ k+1$
-    - $d_{k+1}$ 為區塊的 Nonce，其餘 $d_i$ 就是 \<data $i$ \>
-- k+1 次運算後， $H_{k+1}$ 就是這個區塊的雜湊值
+    - ![Hash Function](https://github.com/fromtaoyuanhsinchuuuu/Group03-Test/blob/main/image/Hash_Function.jpg?raw=true)
+    - 假設區塊中有 $k$ 個data，則 $i\ from\ 1\ to\ k$
+    - $d_i$ 就是 \<data $i$ \>
+- 最後用 $H=Nonce \oplus H_k$
+- 共 k+1 次運算後， $H$ 就是這個區塊的雜湊值
 
 註： $\oplus$ 代表 XOR、 $\ll$ 代表邏輯左移、 $mod$ 代表取模
 
 
+**Computation with Nonce is different from HW**
+
 The hashing function is defined as follows. Compute the block's hash value by operating on all its `data` entries and the `Nonce`:
 - Initial $H_0=0$ .
 - Repeatedly compute using the formula:
-    - ![alt text](https://github.com/fromtaoyuanhsinchuuuu/Group03-Test/blob/main/image/Hash_Function.jpg?raw=true)
-    - Assume the block contains $k$ data entries; iterate $i\ from\ 1\ to\ k+1$ .
-    - $d_{k+1}$ represents the block's `Nonce`, while the remaining $d_i$ represents `<data i>`.
-- After k+1 computations, $H_{k+1}$ is the hash value of the block.
+    - ![Hash Function](https://github.com/fromtaoyuanhsinchuuuu/Group03-Test/blob/main/image/Hash_Function.jpg?raw=true)
+    - Assume the block contains $k$ data entries; iterate $i\ from\ 1\ to\ k$ .
+    - $d_i$ represents `<data i>`.
+- $H= Nonce \oplus H_k$
+- After k+1 computations, $H$ is the hash value of the block.
 
 Note: $\oplus$ denotes XOR, $\ll$ denotes logical left shift, and $mod$ denotes modulus.
+
 
 ### Input Format
 第一行只有兩個數字 $n$ 和 $q$（中間以空格隔開），代表有 $n$ 個區塊檔案及 $q$ 個需要竄改指令
