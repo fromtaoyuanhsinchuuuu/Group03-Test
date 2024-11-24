@@ -62,12 +62,9 @@ int main() {
             return 1; // 文件讀取失敗
         }
 
-        // 添加 Nonce 作為最後一筆資料
-        data[data_size] = nonce;
-        data_size++;
-
         // 計算當前區塊的 hash
         unsigned int current_hash = compute_hash(data, data_size);
+        current_hash = current_hash ^ nonce;
 
         // 比較 hash 值
         if (expected_previous_hash != previous_hash) {
