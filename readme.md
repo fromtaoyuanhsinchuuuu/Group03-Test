@@ -1,4 +1,5 @@
 # 布拉格錢數位帳本-有漏洞？！那我親自來
+The English version was translated by ChatGPT. We have done our best to maintain the accuracy of the problem description to ensure that you will not misunderstand the requirements.
 
 ### 故事 Story
 秉持著「做中學」的精神，你在上一個任務中熟悉並理解了布拉格錢數位帳本的運行機制，並從中發現了更多漏洞。你發現了自定義雜湊函數的可計算性，這樣就能在竄改資料的同時改變 Nonce，使得被竄改區塊的雜湊值不變。
@@ -70,7 +71,7 @@ P: <pre-hash>
 <data k>
 N: <nonce>
 ```
-- 檔案中所有數字皆以十進位表示
+- 檔案中所有數字皆以十進位表示，請注意冒號後面的空格
 - 第一行 `P: ` 後面的數字是 previous hash，為上一個區塊的雜湊值
     - 第一個區塊的 P 必為 0
     - **所有區塊的 previous hash 皆不可更動**
@@ -80,12 +81,12 @@ N: <nonce>
     - **更改 Nonce 時，也請在數字前補0，直到 Nonce 有十位**
 - 剩下的部份是區塊中的 data，會按照順序排好（如上方範例中 $1\ to\ k$）
     - 我們保證一個區塊至少會有一個 data
-    - **data 開頭沒有編號**
+    - **與作業不同，這次 data 開頭沒有編號**
     - **這次我們保證同一個區塊檔案中的所有 data 都有相同的位數**
     - **竄後的數字也與原本 data 有相同位數**
     - **previous hash 與 nonce 的位數可能與 data 位數不同**
     - 這些改動方便同學計算 offset，並進行 random access
-- All numbers in the file are represented in decimal format.
+- All numbers in the file are represented in decimal format. And please pay attention to the space after the colon.
 - The first line starts with `P: ` followed by a number, which is the `previous hash`, representing the hash value of the previous block.
     - The `P` in the first block must be `0`.
     - **The `previous hash` of all blocks cannot be modified.**
@@ -235,7 +236,7 @@ P: 97384032
 3
 N: 0000000000
 ```
-`x y z` 為 `1 1 1` ，將 `block_0_1.txt` 中第一個 data (原先為 `3` ) 改為 `1`。並更改其最後一行的 Nonce 使得雜湊值不變（記得補0使 Nonce 有十位）
+`x y z` 為 `1 1 1` ，將 `block_0_1.txt` 中第一個 data (原先為 `3` ) 改為 `1`。並更改其最後一行的 Nonce 使得雜湊值不變（記得變補0使 Nonce 有十位）
 
 沒有 不需更改 Nonce 的指令，輸出 `0`
 
